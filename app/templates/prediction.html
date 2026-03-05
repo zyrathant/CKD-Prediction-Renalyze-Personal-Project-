@@ -1,0 +1,175 @@
+{% extends "base.html" %} {% block title %}CKD Prediction{% endblock %} {% block
+styles %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/prediction.css') }}"
+/>
+{% endblock %} {% block content %}
+
+<section class="form">
+  <div class="container">
+    <div class="form_title">
+      <h3>CKD Prediction System</h3>
+    </div>
+    <div class="form_fill">
+      <form id="health-form">
+        <!-- Personal Information -->
+        <div class="personal">
+          <div class="personal_icon">
+            <img
+              src="{{ url_for('static', filename='img/personal.png') }}"
+              alt=""
+            />
+          </div>
+          <div class="personal_content">
+            <fieldset>
+              <legend class="personal_inf">Personal Information</legend>
+              <label for="age">Age:</label>
+              <input type="number" id="age" name="age" min="0" max="120" />
+              <br /><br />
+              <label for="BMIBaseline">BMI:</label>
+              <input
+                type="number"
+                id="BMIBaseline"
+                name="BMIBaseline"
+                step="1"
+                min="0"
+                max="100"
+                required
+              />
+              <br /><br />
+              <label for="gender">Gender:</label>
+              <select id="gender" name="gender" required>
+                <option value="">--Choose--</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </fieldset>
+          </div>
+        </div>
+
+        <!-- Medical History -->
+        <div class="history">
+          <div class="history_icon">
+            <img
+              src="{{ url_for('static', filename='img/medical-history.jpg') }}"
+              alt=""
+            />
+          </div>
+          <div class="history_content">
+            <fieldset>
+              <legend class="history_inf">Medical History</legend>
+              <label
+                ><input type="checkbox" name="HistoryDiabetes" /> History of
+                Diabetes</label
+              ><br />
+              <label
+                ><input type="checkbox" name="HistoryCHD" /> History of
+                CHD</label
+              ><br /><br />
+            </fieldset>
+          </div>
+        </div>
+
+        <!-- Recent test results -->
+        <div class="results">
+          <div class="results_icon">
+            <img
+              src="{{ url_for('static', filename='img/results.jpg') }}"
+              alt=""
+            />
+          </div>
+          <div class="results_content">
+            <fieldset>
+              <legend class="results_inf">Recent test results</legend>
+              <label for="CholesterolBaseline">Cholesterol:</label>
+              <input
+                type="number"
+                id="CholesterolBaseline"
+                name="CholesterolBaseline"
+                step="0.1"
+                required
+              /><br /><br />
+
+              <label for="CreatinineBaseline"
+                >Creatinine:
+                <span
+                  title="Creatinine is a waste product from the normal breakdown of muscle tissue. It is usually produced at a fairly constant rate by the body."
+                  >ℹ️</span
+                ></label
+              >
+              <input
+                type="number"
+                id="CreatinineBaseline"
+                name="CreatinineBaseline"
+                step="0.1"
+                required
+              /><br /><br />
+
+              <label for="eGFRBaseline"
+                >eGFR:
+                <span
+                  title="eGFR (estimated Glomerular Filtration Rate) is a measure used to assess kidney function."
+                  >ℹ️</span
+                >
+              </label>
+              <input
+                type="number"
+                id="eGFRBaseline"
+                name="eGFRBaseline"
+                step="0.1"
+                required
+              /><br /><br />
+
+              <label for="sBPBaseline"
+                >Systolic BP:
+                <span
+                  title="Systolic Blood Pressure is the top number in a blood pressure reading, indicating the pressure in your arteries when the heart beats."
+                  >ℹ️</span
+                >
+              </label>
+              <input
+                type="number"
+                id="sBPBaseline"
+                name="sBPBaseline"
+                required
+              /><br /><br />
+
+              <label for="dBPBaseline"
+                >Diastolic BP:
+                <span
+                  title="Diastolic Blood Pressure is the bottom number in a blood pressure reading, indicating the pressure in your arteries when the heart is at rest between beats."
+                  >ℹ️</span
+                >
+              </label>
+              <input
+                type="number"
+                id="dBPBaseline"
+                name="dBPBaseline"
+                required
+              /><br /><br />
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="submit">
+          <button type="submit" id="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+    <br />
+  </div>
+</section>
+
+<section class="health_result">
+  <div class="result_content"></div>
+   <div class="link" id="results-link">
+      <a href="{{ url_for('details') }}">
+        <p>See the visualisation report</p>
+      </a>
+    </div>
+</section>
+
+{% endblock %} {% block scripts %} {{ super() }}
+<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+{% endblock %}

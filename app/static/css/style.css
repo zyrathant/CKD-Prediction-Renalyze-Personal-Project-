@@ -1,0 +1,414 @@
+/* IMPORT FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://use.typekit.net/tjf3vqy.css');
+
+* {
+  font-family: 'Jost', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  background-color: white;
+}
+
+.container {
+  max-width: 1140px;
+  margin: auto;
+}
+
+/* welcome css  */
+.welcome {
+  padding-top: 80px;
+}
+
+.welcome .container {
+  display: flex;
+}
+
+.welcome .welcome_left {
+  width: 60%;
+}
+
+.welcome .welcome_right {
+  width: 40%;
+}
+
+.welcome .welcome_title p {
+  color: rgb(38, 38, 126);
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.welcome .welcome_title h1 {
+  font-size: 70px;
+  font-weight: bold;
+  color: #262626;
+}
+
+.welcome .text {
+  margin-top: 20px;
+}
+
+.welcome .text p {
+  font-size: 18px;
+  line-height: 30px;
+  color: gray;
+}
+
+.welcome .text ul {
+  font-size: 20px;
+  margin-top: 20px;
+  color: gray;
+}
+
+.welcome .text ul li span {
+  margin-left: 10px;
+}
+.welcome .text button {
+  margin-top: 20px;
+}
+
+.welcome ul li {
+  list-style: none;
+}
+
+.welcome .welcome_right img {
+  margin-top: -50px;
+  width: 80%;
+}
+
+/* using css  */
+.using {
+  margin-top: 100px;
+}
+
+.using .using_title p {
+  text-align: center;
+  color: rgb(38, 38, 126);
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.using .using_title h2 {
+  text-align: center;
+  font-size: 70px;
+  font-weight: bold;
+  color: #262626;
+}
+
+.using .using_item {
+  padding: 20px 25px;
+  border-radius: 0.5rem;
+  text-align: center;
+  transition: all 0.3s;
+  transform: translateY(0);
+}
+
+.using .using_item:hover {
+  border-image: url(./../img/br.png) 30 /19px round;
+
+  transform: translateY(-25px);
+}
+
+.using .using_content .using_item img {
+  width: 200px;
+}
+
+.using .using_content .using_item h3 {
+  font-weight: bold;
+  padding: 20px;
+}
+
+.using .using_content .using_item p {
+  color: gray;
+}
+
+.using .using_content {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* About Us css  */
+.about_us {
+  margin-top: 100px;
+}
+
+.about_us .about_container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.about_us .about_left {
+  width: 50%;
+  margin-right: 100px;
+  padding-top: 50px;
+}
+
+.about_us .about_right {
+  width: 50%;
+}
+
+.about_us .about_left img {
+  width: 100%;
+  height: 400px;
+  border-radius: 0 100px 100px 0;
+}
+
+.about_us .about_right {
+  padding-right: 150px;
+}
+.about_us .about_right .title p {
+  font-size: 22px;
+  font-weight: bold;
+  color: rgb(38, 38, 126);
+}
+
+.about_us .title h2 {
+  font-size: 50px;
+  font-weight: bold;
+  color: #262626;
+  line-height: 1.1;
+  margin: 20px 0;
+}
+
+.about_us .about_right .text p {
+  color: gray;
+  line-height: 1.5;
+}
+
+.about_us .about_right .text ul {
+  margin: 20px 0;
+}
+
+.about_us .about_right .text ul li {
+  list-style: none;
+  line-height: 1.5;
+}
+
+.about_us .about_right .text ul li i {
+  font-size: 24px;
+  color: rgb(38, 38, 126);
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.about_us .about_right .text ul li span {
+  color: gray;
+}
+
+.about_us button {
+  padding: 20px 35px;
+  border-radius: 30px;
+  font-size: 15px;
+  color: white;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+  color: black;
+  display: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.btn-grad a{
+  text-decoration: none;
+  color: white;
+}
+@media (max-width: 768px) {
+  .dropdown-toggle {
+    display: block;
+  }
+
+  .dropdown-content {
+    position: static;
+    width: 100%;
+    display: none;
+  }
+
+  .dropdown-content a {
+    padding: 15px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .dropdown.active .dropdown-content {
+    display: block;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+  }
+
+  .search_field {
+    position: relative;
+    padding: 10px;
+  }
+
+  .search_icon {
+    position: absolute;
+    top: 15px;
+    left: 85%;
+  }
+
+  .search_field input {
+    width: 100%;
+  }
+
+  .dropdown {
+    margin-left: 10px;
+  }
+
+  .header-menu {
+    display: none !important;
+  }
+
+  .form_fill #heath-form {
+    grid-template-columns: 1fr;
+  }
+
+  .header_content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header_content .search_field input {
+    width: 100%;
+  }
+
+  .header_content .search_icon {
+    left: 83%;
+    top: 30%;
+  }
+
+  nav ul {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  nav ul li {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .icons {
+    display: none;
+  }
+
+  /* Welcome Section  */
+  .welcome .welcome_right img {
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  /* Using Section */
+  .using .using_content {
+    display: block; /* Stack the using items vertically */
+  }
+
+  .using .using_item {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px;
+  }
+
+  .using .using_item img {
+    width: 150px;
+    margin-bottom: 15px;
+  }
+
+  .using .using_item h3 {
+    font-size: 20px;
+  }
+
+  .using .using_item p {
+    font-size: 16px;
+  }
+
+  /* About Us Section */
+  .about_us .about_container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about_us .about_left {
+    width: 100%;
+    margin-right: 0;
+    padding-top: 20px;
+  }
+
+  .about_us .about_left img {
+    width: 90%;
+    height: auto;
+  }
+
+  .about_us .about_right {
+    width: 100%;
+    padding-right: 0;
+    text-align: center;
+  }
+
+  .about_us .about_right .title h2 {
+    font-size: 35px;
+  }
+
+  .about_us .about_right .text p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .about_us .about_right .text ul li {
+    font-size: 16px;
+  }
+
+  .about_us .about_right button {
+    width: 100%;
+    padding: 15px;
+  }
+}

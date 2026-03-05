@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}CKD Prediction{% endblock %}
+{% block content %}
+<section class="visualisation">
+    <iframe src="{{ url_for('static', filename='visualisations/train_model.html') }}" 
+            width="100%" 
+            height="600px" 
+            frameborder="0">
+    </iframe>
+</section>
+{% endblock %}

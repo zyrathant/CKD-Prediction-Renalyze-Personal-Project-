@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}CKD Prediction{% endblock %}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/flaticon/flaticon.css') }}"
+    />
+
+    <!-- Custom CSS -->
+    {% block styles %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/chatbot.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/header.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/footer.css') }}"
+    />
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <div class="header_content">
+        <!-- Logo -->
+        <div class="logo">
+          <a href="{{ url_for('index') }}">
+            <img
+              src="{{ url_for('static', filename='img/ckd-letter-logo-design-on-600nw-2147345513.webp') }}"
+              alt="Logo"
+            />
+          </a>
+        </div>
+
+        <!-- Dropdown Menu  -->
+        <div class="dropdown">
+          <button class="dropdown-toggle" id="dropdown-button">☰ Menu</button>
+          <div class="dropdown-content" id="dropdown-menu">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('prediction') }}">CKD Prediction</a>
+            <a href="{{ url_for('details') }}">Data Visualisation Report</a>
+            <a href="{{ url_for('recommendations') }}"
+              >Health Recommendations</a
+            >
+          </div>
+        </div>
+        <div class="header-menu">
+          <nav>
+            <ul>
+              <li></li>
+              <li><a href="{{ url_for('index') }}">Home</a></li>
+              <li></li>
+              <li>
+                <a href="{{ url_for('prediction') }}">CKD Prediction</a>
+              </li>
+              <li>
+                <a href="{{ url_for('details') }}">
+                  <p>Data Visualisation Report</p>
+                </a>
+              </li>
+              <li>
+                <a href="{{ url_for('recommendations') }}">
+                  <p>Health Recommendations</p>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer>
+      <div class="container">
+        <div
+          class="footer_subscribe wow animate__ animate__fadeInUp animate__delay-0.5s animated"
+          data-wow-duration="2s"
+        >
+          <div class="text">
+            <p>Subscribe To Our Newsletter</p>
+          </div>
+          <div class="form">
+            <form>
+              <input
+                type="text"
+                name="email"
+                id="email"
+                placeholder="Your Email Address"
+              />
+              <button class="btn-grad">
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="footer_bot">
+          <div
+            class="navigation wow animate__ animate__fadeIn animate__delay-2s animated"
+            data-wow-duration="2s"
+          >
+            <div class="footer_img2">
+              <img
+                src="{{ url_for('static', filename='img/ckd-letter-logo-design-on-600nw-2147345513.webp') }}"
+                alt="Logo"
+              />
+            </div>
+            <div class="footer_content2">
+              <ul>
+                <li>
+                  <i class="fa fa-phone"></i
+                  ><span>
+                    <p>028 3776 1300</p>
+                    <br />
+                    <p>(+84) 28 3776 1369</p>
+                  </span>
+                </li>
+                <li>
+                  <i class="fa fa-envelope"></i
+                  ><span>
+                    <p>renalyze@gmail.com</p>
+                    <br />
+                    <p>enquiries@rmit.edu.vn</p>
+                  </span>
+                </li>
+                <li>
+                  <i class="fa fa-phone"></i
+                  ><span>
+                    <p>702 Đ. Nguyễn Văn Linh</p>
+                    <br />
+                    <p>Tân Hưng, Quận 7</p>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- nav  -->
+          <div
+            class="navigation navbar wow animate__ animate__fadeIn animate__delay-2s animated"
+            data-wow-duration="2s"
+          >
+            <h3>Our links</h3>
+            <ul>
+              <li></li>
+              <li>
+                <a href="{{ url_for('index') }}"
+                  ><p><i class="fa fa-angle-right"></i>Home</p></a
+                >
+              </li>
+              <li></li>
+              <li>
+                <a href="{{ url_for('prediction') }}"
+                  ><p><i class="fa fa-angle-right"></i>CKD Prediction</p></a
+                >
+              </li>
+              <li>
+                <a href="{{ url_for('details') }}">
+                  <p>
+                    <i class="fa fa-angle-right"></i>Data Visualisation Report
+                  </p>
+                </a>
+              </li>
+              <li>
+                <a href="{{ url_for('recommendations') }}">
+                  <p><i class="fa fa-angle-right"></i>Health Recommendations</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!-- nav  -->
+          <div
+            class="navigation navbar wow animate__ animate__fadeIn animate__delay-2s animated"
+            data-wow-duration="2s"
+          >
+            <h3>Our Services (Under Construction)</h3>
+            <ul class="">
+              <li>
+                <p>
+                  <i class="fa fa-angle-right"></i>
+                  Strategy & Research
+                </p>
+              </li>
+              <li>
+                <p>
+                  <i class="fa fa-angle-right"></i>
+                  Web Development
+                </p>
+              </li>
+              <li>
+                <p>
+                  <i class="fa fa-angle-right"></i>
+                  Chatbot Improvement
+                </p>
+              </li>
+              <li>
+                <p>
+                  <i class="fa fa-angle-right"></i>
+                  Digital Marketing
+                </p>
+              </li>
+            </ul>
+          </div>
+          <!-- nav  -->
+          <div
+            class="navigation navbar wow animate__ animate__fadeIn animate__delay-2s animated"
+            data-wow-duration="2s"
+          >
+            <h3>Other links (Under Construction)</h3>
+            <ul>
+              <li>
+                <p>
+                  <i class="fa fa-angle-right"></i>
+                  Portfolio
+                </p>
+              </li>
+              <li>
+                <p>
+                  <i class="fa fa-angle-right"></i>
+                  Privacy Policy
+                </p>
+              </li>
+              <li>
+                <p>
+                  <i class="fa fa-angle-right"></i>
+                  Terms & Conditions
+                </p>
+              </li>
+              <li>
+                <p>
+                  <i class="fa fa-angle-right"></i>
+                  Support
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- copyright  -->
+      <div class="copyright">
+        <div class="container">
+          <div class="text">
+            Copyright © 2025
+            <span>Renalyze</span>
+            . All rights reserved.
+          </div>
+          <div class="social">
+            <a href="https://www.facebook.com/">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.x.com/">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <button id="chatbot-toggle"><i class="bi bi-robot"></i></button>
+
+    <div id="chatbot">
+      <div id="chatbot-header">
+        <div id="logo">
+          <i class="bi bi-robot"></i>
+        </div>
+        <div id="title">
+          <h4>AI Chatbot</h4>
+          <p>Ask me anything about CKD</p>
+        </div>
+        <button id="header-toggle"><i class="bi bi-x"></i></button>
+      </div>
+      <div id="messages"></div>
+      <div id="chat-input">
+        <div id="loading" style="display: none">
+          <div class="spinner"></div>
+        </div>
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Type your question..."
+        />
+        <button id="send-button"><i class="bi bi-send"></i></button>
+      </div>
+    </div>
+
+    {% block scripts %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Wow.js -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"
+      integrity="sha512-Eak/29OTpb36LLo2r47IpVzPBLXnAMPAVypbSZiZ4Qkf8p/7S/XRG5xp7OKWPPYfJT6metI+IORkR5G8F900+g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      new WOW().init();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+    <script>
+      document
+        .querySelector("#dropdown-button")
+        .addEventListener("click", function () {
+          const dropdown = document.querySelector(".dropdown");
+          dropdown.classList.toggle("active");
+        });
+
+      const menuItems = document.querySelectorAll(".dropdown-content a");
+      menuItems.forEach(function (item) {
+        item.addEventListener("click", function () {
+          document.querySelector(".dropdown").classList.remove("active");
+        });
+      });
+
+      document.getElementById("linkBtn").addEventListener("click", function () {
+        window.location.href = "{{ url_for('details') }}";
+      });
+    </script>
+
+    {% endblock %}
+  </body>
+</html>

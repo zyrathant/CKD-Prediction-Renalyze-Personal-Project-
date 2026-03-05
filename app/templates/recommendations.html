@@ -1,0 +1,400 @@
+{% extends "base.html" %} {% block title %}CKD Prediction{% endblock %} {% block
+styles %} {{ super() }}
+<!-- Include styles from base.html -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/recommendations.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %} {% block content %}
+<header class="recommendations text-white text-center py-3">
+  <nav>
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#overview">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#symptoms">Symptoms</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#carousel">Key Facts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#statistics">Statistics</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#treatment">Treatment</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#resources">Resources</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main class="container my-4">
+  <section id="overview" class="mb-4">
+    <h2>Overview</h2>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="card-icon fas fa-user-md fa-2x mb-2"></i>
+            <h5 class="card-title">1 in 7 Adults</h5>
+            <p class="card-text">
+              More than 35.5 million people, or 14%, are estimated to have CKD.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="card-icon fas fa-question-circle fa-2x mb-2"></i>
+            <h5 class="card-title">Undiagnosed CKD</h5>
+            <p class="card-text">
+              As many as 9 in 10 adults with CKD do not know they have it.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="card-icon fas fa-exclamation-triangle fa-2x mb-2"></i>
+            <h5 class="card-title">Severe CKD Awareness</h5>
+            <p class="card-text">
+              About 1 in 3 adults with severe CKD do not know they have it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="card-icon fas fa-calendar-alt fa-2x mb-2"></i>
+            <h5 class="card-title">Age Factor</h5>
+            <p class="card-text">
+              CKD is more common in people aged 65 years or older (34%).
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="card-icon fas fa-genderless fa-2x mb-2"></i>
+            <h5 class="card-title">Gender Distribution</h5>
+            <p class="card-text">
+              CKD is slightly more common in women (14%) than men (12%).
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="card-icon fas fa-users fa-2x mb-2"></i>
+            <h5 class="card-title">Race/Ethnicity</h5>
+            <p class="card-text">
+              CKD is more common in non-Hispanic Black adults (20%).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>
+      Chronic Kidney Disease (CKD) is a progressive loss of kidney function,
+      often caused by conditions like high blood pressure and diabetes. It can
+      lead to kidney failure, requiring dialysis or transplantation.
+    </p>
+  </section>
+
+  <section id="stages" class="mb-4">
+    <h2>Stages of Chronic Kidney Disease (CKD)</h2>
+    <div
+      id="stagesCarousel"
+      class="carousel slide"
+      data-ride="carousel"
+      data-interval="2000"
+    >
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="text-center">
+            <i class="bi bi-heart-pulse carousel-icon"></i>
+            <h3>Stage 1</h3>
+            <h4>GFR: 90 and higher</h4>
+            <p>
+              Your kidneys are working well but you have signs of mild kidney
+              damage.
+            </p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="text-center">
+            <i class="bi bi-heart-pulse carousel-icon"></i>
+            <h3>Stage 2</h3>
+            <h4>GFR: 60 to 89</h4>
+            <p>
+              Your kidneys are working well but you have more signs of mild
+              kidney damage.
+            </p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="text-center">
+            <i class="bi bi-heart-pulse carousel-icon"></i>
+            <h3>Stage 3a</h3>
+            <h4>GFR: 45 to 59</h4>
+            <p>
+              Your kidneys aren’t working as well as they should and show mild
+              to moderate damage.
+            </p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="text-center">
+            <i class="bi bi-heart-pulse carousel-icon"></i>
+            <h3>Stage 3b</h3>
+            <h4>GFR: 30 to 44</h4>
+            <p>
+              Your kidneys show moderate damage and don’t work as well as they
+              should.
+            </p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="text-center">
+            <i class="bi bi-heart-pulse carousel-icon"></i>
+            <h3>Stage 4</h3>
+            <h4>GFR: 15 to 29</h4>
+            <p>
+              You have very poor kidney function; your kidneys are severely
+              damaged.
+            </p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="text-center">
+            <i class="bi bi-heart-pulse carousel-icon"></i>
+            <h3>Stage 5</h3>
+            <h4>GFR: Less than 15</h4>
+            <p>
+              Your kidneys are very close to failing or have stopped working.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="statistics" class="mb-4">
+    <h2>Statistics on CKD</h2>
+    <canvas id="ckdChart"></canvas>
+    <p class="caption">
+      Figure 1: Prevalence of Chronic Kidney Disease (CKD) among Men, Women, and
+      Total Cases in the U.S.
+    </p>
+    <p class="source">
+      Source: Centers for Disease Control and Prevention (CDC), National
+      Institute of Diabetes and Digestive and Kidney Diseases (NIDDK).
+    </p>
+  </section>
+
+  <section id="treatment">
+    <h2>How is CKD Treated?</h2>
+    <p>
+      While there is no cure for CKD, you can take steps to preserve kidney
+      function:
+    </p>
+    <ul>
+      <li>
+        <i class="fas fa-stethoscope icon"></i
+        ><strong>Regular Healthcare Visits:</strong> Keep appointments with your
+        healthcare provider or nephrologist.
+      </li>
+      <li>
+        <i class="fas fa-blood-droplet icon"></i
+        ><strong>Manage Diabetes:</strong> Control your blood glucose levels.
+      </li>
+      <li>
+        <i class="fas fa-ban icon"></i
+        ><strong>Avoid Harmful Medications:</strong> Stay away from painkillers
+        that can worsen kidney function.
+      </li>
+      <li>
+        <i class="fas fa-tachometer-alt icon"></i
+        ><strong>Control Blood Pressure:</strong> Keep your levels in check.
+      </li>
+      <li>
+        <i class="fas fa-utensils icon"></i
+        ><strong>Follow a Kidney-Friendly Diet:</strong> Limit protein, sodium,
+        and potassium intake.
+      </li>
+      <li>
+        <i class="fas fa-smoking-ban icon"></i
+        ><strong>Don’t Smoke:</strong> Quitting improves overall health.
+      </li>
+      <li>
+        <i class="fas fa-running icon"></i><strong>Stay Active:</strong> Aim for
+        regular exercise on most days.
+      </li>
+      <li>
+        <i class="fas fa-weight icon"></i
+        ><strong>Maintain a Healthy Weight:</strong> Keep your weight within a
+        healthy range.
+      </li>
+    </ul>
+  </section>
+
+  <section id="medications" class="mt-4">
+    <h2>Medications for Kidney Disease</h2>
+    <p>Your nephrologist may prescribe:</p>
+    <ul>
+      <li>
+        <i class="fas fa-pills icon"></i
+        ><strong>ACE Inhibitors or ARBs:</strong> To help lower blood pressure.
+      </li>
+      <li>
+        <i class="fas fa-tablets icon"></i
+        ><strong>Phosphate Binders:</strong> For phosphate elimination.
+      </li>
+      <li>
+        <i class="fas fa-water icon"></i><strong>Diuretics:</strong> To remove
+        excess fluid.
+      </li>
+      <li>
+        <i class="fas fa-heart icon"></i
+        ><strong>Cholesterol-Lowering Medications:</strong> To manage
+        cholesterol levels.
+      </li>
+      <li>
+        <i class="fas fa-blood icon"></i><strong>Erythropoietin:</strong> To
+        build red blood cells if you’re anemic.
+      </li>
+      <li>
+        <i class="fas fa-bone icon"></i
+        ><strong>Vitamin D and Calcitriol:</strong> To prevent bone loss.
+      </li>
+    </ul>
+  </section>
+
+  <section id="dialysis" class="mt-4">
+    <h2>What is Kidney Dialysis?</h2>
+    <p>In end-stage kidney disease, dialysis may be necessary:</p>
+    <ul>
+      <li>
+        <i class="fas fa-clinic-medical icon"></i
+        ><strong>Hemodialysis:</strong> Blood is filtered through a machine;
+        requires treatments about three times a week.
+      </li>
+      <li>
+        <i class="fas fa-syringe icon"></i
+        ><strong>Peritoneal Dialysis:</strong> A solution is placed in the
+        abdomen through a catheter; can be done at home.
+      </li>
+    </ul>
+  </section>
+
+  <section id="transplant" class="mt-4">
+    <h2>What is a Kidney Transplant?</h2>
+    <p>
+      A kidney transplant involves replacing a diseased kidney with a healthy
+      one from:
+    </p>
+    <ul>
+      <li>
+        <i class="fas fa-user-friends icon"></i
+        ><strong>Living Donors:</strong> Family members or friends.
+      </li>
+      <li>
+        <i class="fas fa-user-md icon"></i
+        ><strong>Deceased Donors:</strong> Organs from individuals who have
+        consented to donate.
+      </li>
+    </ul>
+    <p>
+      On average, it takes about three to five years for a kidney from a
+      deceased donor.
+    </p>
+  </section>
+
+  <section id="prevention" class="mt-4">
+    <h2>Prevention of Kidney Disease</h2>
+    <p>To help prevent CKD, consider the following:</p>
+    <ul>
+      <li>
+        <i class="recommendationsfas fa-calendar-check icon"></i
+        ><strong>Regular Check-ups:</strong> Visit your healthcare provider
+        regularly.
+      </li>
+      <li>
+        <i class="fas fa-tachometer-alt icon"></i
+        ><strong>Manage Blood Pressure:</strong> Keep it within healthy limits.
+      </li>
+      <li>
+        <i class="fas fa-blood-drop icon"></i
+        ><strong>Control Blood Sugar:</strong> Especially if you have diabetes.
+      </li>
+      <li>
+        <i class="fas fa-carrot icon"></i
+        ><strong>Eat a Balanced Diet:</strong> Focus on nutritious foods.
+      </li>
+      <li>
+        <i class="fas fa-smoking-ban icon"></i
+        ><strong>Avoid Tobacco:</strong> Don’t smoke or use tobacco products.
+      </li>
+      <li>
+        <i class="fas fa-running icon"></i><strong>Stay Active:</strong> Engage
+        in at least 30 minutes of physical activity most days.
+      </li>
+      <li>
+        <i class="fas fa-weight icon"></i
+        ><strong>Maintain Healthy Weight:</strong> Keep your weight in a healthy
+        range.
+      </li>
+      <li>
+        <i class="fas fa-prescription-bottle-alt icon"></i
+        ><strong>Use Pain Relievers Carefully:</strong> Follow directions to
+        avoid kidney damage.
+      </li>
+      <li>
+        <i class="fas fa-beer icon"></i><strong>Limit Alcohol:</strong> Drink in
+        moderation.
+      </li>
+    </ul>
+  </section>
+
+  <section id="resources" class="mb-4">
+    <h2>Resources</h2>
+    <ul>
+      <li>
+        <a href="https://www.kidney.org/" target="_blank"
+          >National Kidney Foundation</a
+        >
+      </li>
+      <li>
+        <a href="https://www.clevelandclinic.org/" target="_blank"
+          >Cleveland Clinic</a
+        >
+      </li>
+      <li>
+        <a href="https://www.cdc.gov/kidney-disease/" target="_blank"
+          >CDC Kidney Disease</a
+        >
+      </li>
+    </ul>
+  </section>
+</main>
+{% endblock %} {% block scripts %} {{ super() }}
+<script src="{{ url_for('static', filename='js/recommendations.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
