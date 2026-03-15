@@ -1,400 +1,375 @@
-{% extends "base.html" %} {% block title %}CKD Prediction{% endblock %} {% block
-styles %} {{ super() }}
-<!-- Include styles from base.html -->
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/recommendations.css') }}"
-/>
-<link
-  rel="stylesheet"
-  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% endblock %} {% block content %}
-<header class="recommendations text-white text-center py-3">
-  <nav>
-    <ul class="nav justify-content-center">
-      <li class="nav-item">
-        <a class="nav-link text-white" href="#overview">Overview</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="#symptoms">Symptoms</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="#carousel">Key Facts</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="#statistics">Statistics</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="#treatment">Treatment</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="#resources">Resources</a>
-      </li>
-    </ul>
-  </nav>
-</header>
+{% extends "base.html" %} 
+{% block title %}Clinical Insights | Renalyze{% endblock %} 
 
-<main class="container my-4">
-  <section id="overview" class="mb-4">
-    <h2>Overview</h2>
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <div class="card text-center">
-          <div class="card-body">
-            <i class="card-icon fas fa-user-md fa-2x mb-2"></i>
-            <h5 class="card-title">1 in 7 Adults</h5>
-            <p class="card-text">
-              More than 35.5 million people, or 14%, are estimated to have CKD.
-            </p>
+{% block styles %} 
+{{ super() }}
+<style>
+  :root {
+    --primary-navy: #0f172a;
+    --accent-teal: #2dd4bf;
+    --medical-blue: #38bdf8;
+    --bg-slate: #f8fafc;
+    --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .resource-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .resource-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-teal);
+    box-shadow: 0 15px 30px rgba(45, 212, 191, 0.1);
+  }
+
+  .resource-card .icon-box {
+    width: 50px;
+    height: 50px;
+    background: #f8fafc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    font-size: 1.5rem;
+    color: var(--primary-navy);
+    transition: 0.3s;
+  }
+
+  .resource-card:hover .icon-box {
+    background: var(--accent-teal);
+    color: var(--primary-navy);
+  }
+
+  .resource-card h6 {
+    color: var(--primary-navy);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .resource-card p {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .resource-link-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--medical-blue);
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .resource-link-text i {
+    margin-left: 5px;
+    transition: transform 0.3s;
+  }
+
+  .resource-card:hover .resource-link-text i {
+    transform: translateX(5px);
+  }
+
+  .page-wrapper { background-color: var(--bg-slate); min-height: 100vh; }
+
+  /* Smooth Sticky Header */
+  .sub-nav {
+    background: var(--primary-navy);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .sub-nav .nav-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 1.2rem 1rem;
+    transition: color 0.3s;
+  }
+  .sub-nav .nav-link:hover { color: var(--accent-teal) !important; }
+
+  /* Metric Cards */
+  .metric-card {
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 2rem;
+    height: 100%;
+    transition: transform 0.3s;
+    box-shadow: var(--card-shadow);
+    border-bottom: 4px solid transparent;
+  }
+  .metric-card:hover { transform: translateY(-5px); border-bottom-color: var(--medical-blue); }
+  .metric-value { font-size: 2.2rem; font-weight: 800; color: var(--primary-navy); line-height: 1; margin-bottom: 0.5rem; }
+  .metric-icon { color: var(--medical-blue); margin-bottom: 1.5rem; display: block; }
+
+  /* Stages Timeline */
+  .stage-carousel-container {
+    background: var(--primary-navy);
+    border-radius: 30px;
+    padding: 4rem 2rem;
+    color: white;
+    margin: 4rem 0;
+  }
+  .carousel-item h3 { color: var(--accent-teal); font-weight: 800; }
+  .carousel-indicators li { background-color: var(--accent-teal); width: 12px; height: 12px; border-radius: 50%; }
+
+  /* List Styling */
+  .med-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+  .med-item {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e2e8f0;
+  }
+  .med-item i {
+    width: 45px;
+    height: 45px;
+    background: #f0fdfa;
+    color: var(--accent-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-right: 15px;
+    flex-shrink: 0;
+  }
+
+  h2.section-header {
+    font-weight: 800;
+    color: var(--primary-navy);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+  }
+  h2.section-header::after {
+    content: "";
+    height: 3px;
+    background: var(--accent-teal);
+    flex-grow: 1;
+    margin-left: 20px;
+    border-radius: 10px;
+    opacity: 0.3;
+  }
+</style>
+{% endblock %} 
+
+{% block content %}
+<div class="page-wrapper">
+  
+  <header class="sub-nav">
+    <nav class="container">
+      <ul class="nav justify-content-center">
+        <li class="nav-item"><a class="nav-link text-white" href="#overview">Overview</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#stages">Stages</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#statistics">Statistics</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#treatment">Treatment</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#resources">Resources</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container py-5">
+    
+    <section id="overview" class="mb-5 pt-4">
+      <h2 class="section-header">Epidemiological Overview</h2>
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="metric-card">
+            <i class="bi bi-people metric-icon fs-1"></i>
+            <div class="metric-value">14%</div>
+            <p class="fw-bold mb-1">Total US Adults</p>
+            <p class="small text-muted mb-0">More than 35.5 million people are currently estimated to live with CKD.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric-card">
+            <i class="bi bi-eye-slash metric-icon fs-1"></i>
+            <div class="metric-value">9 in 10</div>
+            <p class="fw-bold mb-1">Undiagnosed Cases</p>
+            <p class="small text-muted mb-0">The majority of adults with CKD are unaware of their decreasing kidney function.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric-card">
+            <i class="bi bi-graph-up-arrow metric-icon fs-1"></i>
+            <div class="metric-value">34%</div>
+            <p class="fw-bold mb-1">Seniors (65+)</p>
+            <p class="small text-muted mb-0">Prevalence increases significantly with age due to long-term vascular stress.</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mb-3">
-        <div class="card text-center">
-          <div class="card-body">
-            <i class="card-icon fas fa-question-circle fa-2x mb-2"></i>
-            <h5 class="card-title">Undiagnosed CKD</h5>
-            <p class="card-text">
-              As many as 9 in 10 adults with CKD do not know they have it.
-            </p>
+      
+      <div class="row g-4">
+        <div class="col-md-6">
+            <div class="p-4 bg-white rounded-4 shadow-sm border-start border-info border-5">
+                <h6 class="fw-bold text-uppercase small text-info">Gender Insight</h6>
+                <p class="mb-0">CKD shows a slight variance in distribution, affecting <strong>14% of women</strong> compared to <strong>12% of men</strong>.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 bg-white rounded-4 shadow-sm border-start border-primary border-5">
+                <h6 class="fw-bold text-uppercase small text-primary">Racial Demographics</h6>
+                <p class="mb-0">Prevalence is notably higher in <strong>non-Hispanic Black adults (20%)</strong> compared to other groups.</p>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stages" class="stage-carousel-container text-center">
+      <h2 class="text-white fw-bold mb-4">CKD Progression Stages</h2>
+      <div id="stagesCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#stagesCarousel" data-bs-slide-to="0" class="active"></button>
+          <button type="button" data-bs-target="#stagesCarousel" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#stagesCarousel" data-bs-slide-to="2"></button>
+          <button type="button" data-bs-target="#stagesCarousel" data-bs-slide-to="3"></button>
+          <button type="button" data-bs-target="#stagesCarousel" data-bs-slide-to="4"></button>
+        </div>
+        <div class="carousel-inner px-md-5">
+          <div class="carousel-item active">
+            <div class="py-4">
+              <span class="badge bg-light text-dark mb-3 px-3">GFR: 90+</span>
+              <h3>Stage 1: Initial Damage</h3>
+              <p class="lead opacity-75 mx-auto" style="max-width: 700px;">Kidneys function normally but physical markers of damage are present. Proactive monitoring begins here.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="py-4">
+                <span class="badge bg-light text-dark mb-3 px-3">GFR: 60-89</span>
+                <h3>Stage 2: Mild Decline</h3>
+                <p class="lead opacity-75 mx-auto" style="max-width: 700px;">Evidence of mild kidney damage and slight reduction in filtration efficiency.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="py-4">
+                <span class="badge bg-light text-dark mb-3 px-3">GFR: 30-59</span>
+                <h3>Stage 3 (A/B): Moderate Decline</h3>
+                <p class="lead opacity-75 mx-auto" style="max-width: 700px;">A critical transition phase where symptoms may start to appear. Split into 3a (mild-moderate) and 3b (moderate-severe).</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="py-4">
+                <span class="badge bg-light text-dark mb-3 px-3">GFR: 15-29</span>
+                <h3>Stage 4: Severe Decline</h3>
+                <p class="lead opacity-75 mx-auto" style="max-width: 700px;">Severely impaired kidney function. Preparation for renal replacement therapy is often discussed.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="py-4">
+                <span class="badge bg-light text-dark mb-3 px-3">GFR: < 15</span>
+                <h3>Stage 5: Kidney Failure</h3>
+                <p class="lead opacity-75 mx-auto" style="max-width: 700px;">End-stage renal disease (ESRD). Kidneys have stopped working or are close to failing.</p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mb-3">
-        <div class="card text-center">
-          <div class="card-body">
-            <i class="card-icon fas fa-exclamation-triangle fa-2x mb-2"></i>
-            <h5 class="card-title">Severe CKD Awareness</h5>
-            <p class="card-text">
-              About 1 in 3 adults with severe CKD do not know they have it.
-            </p>
-          </div>
+    </section>
+
+    <section id="statistics" class="mb-5 py-4">
+      <h2 class="section-header">CDC National Statistics</h2>
+      <div class="bg-white p-4 rounded-4 shadow-sm mb-4 justify-content-center align-items-center d-flex">
+          <img class="img-fluid rounded-4 shadow-2xl border border-secondary" 
+               src="{{ url_for('static', filename='img/CDC_chart.png') }}" alt="CDC Kidney Disease Statistics" />
+      </div>
+      <p class="small text-muted text-center italic">Source: CDC & NIDDK National Surveillance Data</p>
+    </section>
+
+    <section id="treatment" class="mb-5 py-4">
+      <h2 class="section-header">Management & Treatment</h2>
+      
+      <div class="row g-4">
+        <div class="col-lg-8">
+            <h5 class="fw-bold mb-3"><i class="bi bi-shield-check text-teal me-2"></i>Primary Protocols</h5>
+            <ul class="med-list">
+                <li class="med-item"><i class="bi bi-droplet-half"></i> <div><strong>Blood Pressure:</strong> ACE inhibitors or ARBs help protect kidney vasculature.</div></li>
+                <li class="med-item"><i class="bi bi-capsule"></i> <div><strong>Phosphate Binders:</strong> Assist in the elimination of dietary phosphate.</div></li>
+                <li class="med-item"><i class="bi bi-activity"></i> <div><strong>Erythropoietin:</strong> Stimulates red blood cell production to fight anemia.</div></li>
+                <li class="med-item"><i class="bi bi-egg-fried"></i> <div><strong>Dietary Shift:</strong> Careful regulation of protein, sodium, and potassium.</div></li>
+            </ul>
+        </div>
+        <div class="col-lg-4">
+            <div class="p-4 rounded-4 bg-primary text-white h-100">
+                <h5 class="fw-bold mb-3">Renal Replacement</h5>
+                <p class="small opacity-75">In advanced Stage 5 cases, the following therapies are essential:</p>
+                <div class="mb-3">
+                    <h6 class="text-teal mb-1">Hemodialysis</h6>
+                    <p class="extra-small mb-0">Mechanical blood filtration, typically 3x per week in-clinic.</p>
+                </div>
+                <div>
+                    <h6 class="text-teal mb-1">Transplantation</h6>
+                    <p class="extra-small mb-0">Surgical replacement. Living donor (fastest) or Deceased donor (3-5 years average wait).</p>
+                </div>
+            </div>
         </div>
       </div>
+    </section>
+
+   <section id="resources" class="py-5">
+    <div class="text-center mb-5">
+        <h2 class="section-header d-inline-block">Clinical Resource Hub</h2>
+        <p class="text-muted">Verified external documentation and patient support networks.</p>
     </div>
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <div class="card text-center">
-          <div class="card-body">
-            <i class="card-icon fas fa-calendar-alt fa-2x mb-2"></i>
-            <h5 class="card-title">Age Factor</h5>
-            <p class="card-text">
-              CKD is more common in people aged 65 years or older (34%).
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="card text-center">
-          <div class="card-body">
-            <i class="card-icon fas fa-genderless fa-2x mb-2"></i>
-            <h5 class="card-title">Gender Distribution</h5>
-            <p class="card-text">
-              CKD is slightly more common in women (14%) than men (12%).
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="card text-center">
-          <div class="card-body">
-            <i class="card-icon fas fa-users fa-2x mb-2"></i>
-            <h5 class="card-title">Race/Ethnicity</h5>
-            <p class="card-text">
-              CKD is more common in non-Hispanic Black adults (20%).
-            </p>
-          </div>
-        </div>
-      </div>
+
+    <div class="resource-grid">
+        <a href="https://www.kidney.org/" target="_blank" class="resource-card">
+            <div class="icon-box">
+                <i class="bi bi-bank"></i>
+            </div>
+            <h6>National Kidney Foundation</h6>
+            <p>Comprehensive patient education, kidney health advocacy, and financial assistance resources.</p>
+            <div class="resource-link-text">
+                Explore Portal <i class="bi bi-arrow-right"></i>
+            </div>
+        </a>
+
+        <a href="https://www.cdc.gov/kidney-disease/" target="_blank" class="resource-card">
+            <div class="icon-box">
+                <i class="bi bi-shield-plus"></i>
+            </div>
+            <h6>CDC Kidney Portal</h6>
+            <p>Official public health surveillance, prevention strategies, and national CKD statistics.</p>
+            <div class="resource-link-text">
+                View Data <i class="bi bi-arrow-right"></i>
+            </div>
+        </a>
+
+        <a href="https://www.clevelandclinic.org/" target="_blank" class="resource-card">
+            <div class="icon-box">
+                <i class="bi bi-hospital"></i>
+            </div>
+            <h6>Cleveland Clinic</h6>
+            <p>Peer-reviewed clinical insights into nephrology, treatment options, and surgical innovation.</p>
+            <div class="resource-link-text">
+                Clinical Notes <i class="bi bi-arrow-right"></i>
+            </div>
+        </a>
     </div>
-    <p>
-      Chronic Kidney Disease (CKD) is a progressive loss of kidney function,
-      often caused by conditions like high blood pressure and diabetes. It can
-      lead to kidney failure, requiring dialysis or transplantation.
-    </p>
-  </section>
-
-  <section id="stages" class="mb-4">
-    <h2>Stages of Chronic Kidney Disease (CKD)</h2>
-    <div
-      id="stagesCarousel"
-      class="carousel slide"
-      data-ride="carousel"
-      data-interval="2000"
-    >
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="text-center">
-            <i class="bi bi-heart-pulse carousel-icon"></i>
-            <h3>Stage 1</h3>
-            <h4>GFR: 90 and higher</h4>
-            <p>
-              Your kidneys are working well but you have signs of mild kidney
-              damage.
-            </p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="text-center">
-            <i class="bi bi-heart-pulse carousel-icon"></i>
-            <h3>Stage 2</h3>
-            <h4>GFR: 60 to 89</h4>
-            <p>
-              Your kidneys are working well but you have more signs of mild
-              kidney damage.
-            </p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="text-center">
-            <i class="bi bi-heart-pulse carousel-icon"></i>
-            <h3>Stage 3a</h3>
-            <h4>GFR: 45 to 59</h4>
-            <p>
-              Your kidneys aren’t working as well as they should and show mild
-              to moderate damage.
-            </p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="text-center">
-            <i class="bi bi-heart-pulse carousel-icon"></i>
-            <h3>Stage 3b</h3>
-            <h4>GFR: 30 to 44</h4>
-            <p>
-              Your kidneys show moderate damage and don’t work as well as they
-              should.
-            </p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="text-center">
-            <i class="bi bi-heart-pulse carousel-icon"></i>
-            <h3>Stage 4</h3>
-            <h4>GFR: 15 to 29</h4>
-            <p>
-              You have very poor kidney function; your kidneys are severely
-              damaged.
-            </p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="text-center">
-            <i class="bi bi-heart-pulse carousel-icon"></i>
-            <h3>Stage 5</h3>
-            <h4>GFR: Less than 15</h4>
-            <p>
-              Your kidneys are very close to failing or have stopped working.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="statistics" class="mb-4">
-    <h2>Statistics on CKD</h2>
-    <canvas id="ckdChart"></canvas>
-    <p class="caption">
-      Figure 1: Prevalence of Chronic Kidney Disease (CKD) among Men, Women, and
-      Total Cases in the U.S.
-    </p>
-    <p class="source">
-      Source: Centers for Disease Control and Prevention (CDC), National
-      Institute of Diabetes and Digestive and Kidney Diseases (NIDDK).
-    </p>
-  </section>
-
-  <section id="treatment">
-    <h2>How is CKD Treated?</h2>
-    <p>
-      While there is no cure for CKD, you can take steps to preserve kidney
-      function:
-    </p>
-    <ul>
-      <li>
-        <i class="fas fa-stethoscope icon"></i
-        ><strong>Regular Healthcare Visits:</strong> Keep appointments with your
-        healthcare provider or nephrologist.
-      </li>
-      <li>
-        <i class="fas fa-blood-droplet icon"></i
-        ><strong>Manage Diabetes:</strong> Control your blood glucose levels.
-      </li>
-      <li>
-        <i class="fas fa-ban icon"></i
-        ><strong>Avoid Harmful Medications:</strong> Stay away from painkillers
-        that can worsen kidney function.
-      </li>
-      <li>
-        <i class="fas fa-tachometer-alt icon"></i
-        ><strong>Control Blood Pressure:</strong> Keep your levels in check.
-      </li>
-      <li>
-        <i class="fas fa-utensils icon"></i
-        ><strong>Follow a Kidney-Friendly Diet:</strong> Limit protein, sodium,
-        and potassium intake.
-      </li>
-      <li>
-        <i class="fas fa-smoking-ban icon"></i
-        ><strong>Don’t Smoke:</strong> Quitting improves overall health.
-      </li>
-      <li>
-        <i class="fas fa-running icon"></i><strong>Stay Active:</strong> Aim for
-        regular exercise on most days.
-      </li>
-      <li>
-        <i class="fas fa-weight icon"></i
-        ><strong>Maintain a Healthy Weight:</strong> Keep your weight within a
-        healthy range.
-      </li>
-    </ul>
-  </section>
-
-  <section id="medications" class="mt-4">
-    <h2>Medications for Kidney Disease</h2>
-    <p>Your nephrologist may prescribe:</p>
-    <ul>
-      <li>
-        <i class="fas fa-pills icon"></i
-        ><strong>ACE Inhibitors or ARBs:</strong> To help lower blood pressure.
-      </li>
-      <li>
-        <i class="fas fa-tablets icon"></i
-        ><strong>Phosphate Binders:</strong> For phosphate elimination.
-      </li>
-      <li>
-        <i class="fas fa-water icon"></i><strong>Diuretics:</strong> To remove
-        excess fluid.
-      </li>
-      <li>
-        <i class="fas fa-heart icon"></i
-        ><strong>Cholesterol-Lowering Medications:</strong> To manage
-        cholesterol levels.
-      </li>
-      <li>
-        <i class="fas fa-blood icon"></i><strong>Erythropoietin:</strong> To
-        build red blood cells if you’re anemic.
-      </li>
-      <li>
-        <i class="fas fa-bone icon"></i
-        ><strong>Vitamin D and Calcitriol:</strong> To prevent bone loss.
-      </li>
-    </ul>
-  </section>
-
-  <section id="dialysis" class="mt-4">
-    <h2>What is Kidney Dialysis?</h2>
-    <p>In end-stage kidney disease, dialysis may be necessary:</p>
-    <ul>
-      <li>
-        <i class="fas fa-clinic-medical icon"></i
-        ><strong>Hemodialysis:</strong> Blood is filtered through a machine;
-        requires treatments about three times a week.
-      </li>
-      <li>
-        <i class="fas fa-syringe icon"></i
-        ><strong>Peritoneal Dialysis:</strong> A solution is placed in the
-        abdomen through a catheter; can be done at home.
-      </li>
-    </ul>
-  </section>
-
-  <section id="transplant" class="mt-4">
-    <h2>What is a Kidney Transplant?</h2>
-    <p>
-      A kidney transplant involves replacing a diseased kidney with a healthy
-      one from:
-    </p>
-    <ul>
-      <li>
-        <i class="fas fa-user-friends icon"></i
-        ><strong>Living Donors:</strong> Family members or friends.
-      </li>
-      <li>
-        <i class="fas fa-user-md icon"></i
-        ><strong>Deceased Donors:</strong> Organs from individuals who have
-        consented to donate.
-      </li>
-    </ul>
-    <p>
-      On average, it takes about three to five years for a kidney from a
-      deceased donor.
-    </p>
-  </section>
-
-  <section id="prevention" class="mt-4">
-    <h2>Prevention of Kidney Disease</h2>
-    <p>To help prevent CKD, consider the following:</p>
-    <ul>
-      <li>
-        <i class="recommendationsfas fa-calendar-check icon"></i
-        ><strong>Regular Check-ups:</strong> Visit your healthcare provider
-        regularly.
-      </li>
-      <li>
-        <i class="fas fa-tachometer-alt icon"></i
-        ><strong>Manage Blood Pressure:</strong> Keep it within healthy limits.
-      </li>
-      <li>
-        <i class="fas fa-blood-drop icon"></i
-        ><strong>Control Blood Sugar:</strong> Especially if you have diabetes.
-      </li>
-      <li>
-        <i class="fas fa-carrot icon"></i
-        ><strong>Eat a Balanced Diet:</strong> Focus on nutritious foods.
-      </li>
-      <li>
-        <i class="fas fa-smoking-ban icon"></i
-        ><strong>Avoid Tobacco:</strong> Don’t smoke or use tobacco products.
-      </li>
-      <li>
-        <i class="fas fa-running icon"></i><strong>Stay Active:</strong> Engage
-        in at least 30 minutes of physical activity most days.
-      </li>
-      <li>
-        <i class="fas fa-weight icon"></i
-        ><strong>Maintain Healthy Weight:</strong> Keep your weight in a healthy
-        range.
-      </li>
-      <li>
-        <i class="fas fa-prescription-bottle-alt icon"></i
-        ><strong>Use Pain Relievers Carefully:</strong> Follow directions to
-        avoid kidney damage.
-      </li>
-      <li>
-        <i class="fas fa-beer icon"></i><strong>Limit Alcohol:</strong> Drink in
-        moderation.
-      </li>
-    </ul>
-  </section>
-
-  <section id="resources" class="mb-4">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://www.kidney.org/" target="_blank"
-          >National Kidney Foundation</a
-        >
-      </li>
-      <li>
-        <a href="https://www.clevelandclinic.org/" target="_blank"
-          >Cleveland Clinic</a
-        >
-      </li>
-      <li>
-        <a href="https://www.cdc.gov/kidney-disease/" target="_blank"
-          >CDC Kidney Disease</a
-        >
-      </li>
-    </ul>
-  </section>
-</main>
-{% endblock %} {% block scripts %} {{ super() }}
-<script src="{{ url_for('static', filename='js/recommendations.js') }}"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</section>
+  </main>
+</div>
 {% endblock %}

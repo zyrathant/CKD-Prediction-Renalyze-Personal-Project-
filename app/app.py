@@ -1,3 +1,4 @@
+import pandas as pd
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -9,37 +10,60 @@ import numpy as np
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), 'model', 'model.pkl')
-with open(MODEL_PATH, 'rb') as f:
-    model = pickle.load(f)
+ckd_model_path = os.path.join(os.path.dirname(__file__), 'models', 'ckd_model.pkl')
+with open(ckd_model_path, 'rb') as f:
+    loaded_data  = pickle.load(f)
+    if isinstance(loaded_data, dict):
+        model = loaded_data.get('model', loaded_data.get('classifier'))
+    else:
+        model = loaded_data
 
-@app.route('/prediction', methods=['GET', 'POST'])      
-def prediction():
+@app.route('/ckd_analysis', methods=['GET', 'POST'])      
+def ckd_analysis():
+    # GET request to render the form
+    if request.method == 'GET':
+        return render_template('ckd_analysis.html')
+
+    # POST request to perform the analysis
     if request.method == 'POST':
         try:
             data = request.get_json()
-            print("Received data:", data)  # Debugging line
+            
+            # Map frontend names to model names
+            input_df = pd.DataFrame([{
+                'Sex': data.get('sex'),
+                'eGFRBaseline': float(data.get('egfr', 0)),
+                'AgeBaseline': float(data.get('age', 0)),
+                'CreatinineBaseline': float(data.get('creatinine', 0)),
+                'dBPBaseline': float(data.get('dBP', 0)),
+                'sBPBaseline': float(data.get('sBP', 0)),
+                'CholesterolBaseline': float(data.get('cholesterol', 0)),
+                'BMIBaseline': float(data.get('BMIBaseline', 0)),
+                'HistoryCHD': data.get('chd'),
+                'HistoryDiabetes': data.get('diabetes')
+            }])
 
-            # Extract features
-            age = data.get('age', 0)
-            bmi = data.get('BMIBaseline', 0)
-            sex = 1 if data.get('sex') == 'male' else 0
-            diabetes = 1 if data.get('diabetes') else 0
-            chd = 1 if data.get('chd') else 0
-            cholesterol = data.get('cholesterol', 0)
-            creatinine = data.get('creatinine', 0)
-            egfr = data.get('egfr', 0)
-            sbp = data.get('sBP', 0)
-            dbp = data.get('dBP', 0)
+            input_encoded = pd.get_dummies(input_df)
+            
+            for col in model.feature_names_in_:
+                if col not in input_encoded.columns:
+                    input_encoded[col] = 0
+            
+            input_final = input_encoded[model.feature_names_in_]
+            print("Predicting")
+            probability = model.predict_proba(input_final)[0][1]
+            risk_status = "High Risk" if probability >= 0.4 else "Low Risk"
+            print(f"Raw Output: {probability}, Risk Status: {risk_status}")
+            return jsonify({
+                'probability': round(probability * 100, 2),
+                'status': risk_status,
+                'recommendation': "Please consult a specialist." if risk_status == "High Risk" else "Continue regular monitoring."
+            })
 
-            features = np.array([[age, bmi, sex, diabetes, chd, cholesterol, creatinine, egfr, sbp, dbp]])
-            probability = model.predict_proba(features)[0][1]
-            return jsonify({'probability': round(probability * 100, 2)})
         except Exception as e:
-            print("Error:", e)  # Log the error
-            return jsonify({'error': str(e)}), 500
-
-    return render_template('prediction.html')
+            print(f"Error: {e}")
+            return jsonify({'error': 'Prediction failed'}), 500
+        
 
 # Hugging Face Inference API
 HF_TOKEN = os.getenv("HF_TOKEN")
@@ -119,6 +143,10 @@ def chat():
 @app.route('/details')
 def details():
     return render_template('details.html')
+
+@app.route('/mri_visualisation')
+def mri_visualisation():
+    return render_template('mri_visualisation.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

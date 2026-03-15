@@ -1,371 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>{% block title %}CKD Prediction{% endblock %}</title>
-    <!-- Required meta tags -->
+<head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>{% block title %}Renalyze | Precision Kidney Intelligence{% endblock %}</title>
 
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/flaticon/flaticon.css') }}"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-    <!-- Custom CSS -->
-    {% block styles %}
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/chatbot.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/header.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/footer.css') }}"
-    />
-    {% endblock %}
-  </head>
-  <body>
-    <header>
-      <div class="header_content">
-        <!-- Logo -->
-        <div class="logo">
-          <a href="{{ url_for('index') }}">
-            <img
-              src="{{ url_for('static', filename='img/ckd-letter-logo-design-on-600nw-2147345513.webp') }}"
-              alt="Logo"
-            />
-          </a>
+    <style>
+        :root {
+            --primary-navy: #0f172a;
+            --accent-teal: #2dd4bf;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            backdrop-filter: blur(10px);
+            background-color: rgba(15, 23, 42, 0.9) !important;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.8) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(1);
+        }
+        .navbar-toggler-icon:hover {
+            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(152deg) brightness(118%) contrast(119%);
+        }
+
+        .nav-link:hover {
+            color: var(--accent-teal) !important;
+        }
+
+        .navbar-brand img {
+            height: 40px; 
+            border-radius: 50%;
+        }
+
+        /* Chatbot */
+        #chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-navy);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        #chatbot-toggle:hover { transform: scale(1.1); }
+
+        #chatbot {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1001;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Footer */
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding-top: 5rem;
+        }
+
+        .footer-heading {
+            color: white;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-link {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.3s;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link:hover { color: var(--accent-teal); padding-left: 5px; }
+
+        .btn-teal {
+            background-color: var(--accent-teal);
+            color: var(--primary-navy);
+            font-weight: 700;
+        }
+    </style>
+
+    {% block styles %}{% endblock %}
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Renalyze Logo" class="me-2">
+                <span class="fw-bold text-white fs-4 tracking-tighter">Renalyze<span class="text-info">.</span></span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-center">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('ckd_analysis') }}">CKD Risk Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('mri_visualisation') }}">Tumor Classification/3D Visualisation</a></li>
+                     <li class="nav-item"><a class="nav-link" href="{{ url_for('recommendations') }}">CKD-Related Recommendations</a></li>
+                </ul>
+            </div>
         </div>
+    </nav>
 
-        <!-- Dropdown Menu  -->
-        <div class="dropdown">
-          <button class="dropdown-toggle" id="dropdown-button">☰ Menu</button>
-          <div class="dropdown-content" id="dropdown-menu">
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('prediction') }}">CKD Prediction</a>
-            <a href="{{ url_for('details') }}">Data Visualisation Report</a>
-            <a href="{{ url_for('recommendations') }}"
-              >Health Recommendations</a
-            >
-          </div>
-        </div>
-        <div class="header-menu">
-          <nav>
-            <ul>
-              <li></li>
-              <li><a href="{{ url_for('index') }}">Home</a></li>
-              <li></li>
-              <li>
-                <a href="{{ url_for('prediction') }}">CKD Prediction</a>
-              </li>
-              <li>
-                <a href="{{ url_for('details') }}">
-                  <p>Data Visualisation Report</p>
-                </a>
-              </li>
-              <li>
-                <a href="{{ url_for('recommendations') }}">
-                  <p>Health Recommendations</p>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </header>
-
-    <main>{% block content %}{% endblock %}</main>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
     <footer>
-      <div class="container">
-        <div
-          class="footer_subscribe wow animate__ animate__fadeInUp animate__delay-0.5s animated"
-          data-wow-duration="2s"
-        >
-          <div class="text">
-            <p>Subscribe To Our Newsletter</p>
-          </div>
-          <div class="form">
-            <form>
-              <input
-                type="text"
-                name="email"
-                id="email"
-                placeholder="Your Email Address"
-              />
-              <button class="btn-grad">
-                <i class="fa-solid fa-arrow-right"></i>
-              </button>
-            </form>
-          </div>
-        </div>
-        <div class="footer_bot">
-          <div
-            class="navigation wow animate__ animate__fadeIn animate__delay-2s animated"
-            data-wow-duration="2s"
-          >
-            <div class="footer_img2">
-              <img
-                src="{{ url_for('static', filename='img/ckd-letter-logo-design-on-600nw-2147345513.webp') }}"
-                alt="Logo"
-              />
+        <div class="container pb-5">
+            <div class="row gy-4">
+                <div class="col-lg-4">
+                    <h5 class="footer-heading">Renalyze</h5>
+                    <p class="small pe-lg-5">Advanced diagnostic platform for kidney health monitoring, MRI classification, and 3D volumetric visualization.</p>
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-heading">Modules</h5>
+                    <a href="{{ url_for('ckd_analysis') }}" class="footer-link">CKD Risk Analysis</a>
+                    <a href="{{ url_for('mri_visualisation') }}" class="footer-link">Tumor Classification/3D Visualisation</a>
+                    <a href="{{ url_for('recommendations') }}" class="footer-link">CKD-RelatedRecommendations</a>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-heading">About Me</h5>
+                    <a href="#" class="footer-link">Git Hub</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Support Hub</a>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="footer-heading">Stay Updated</h5>
+                    <div class="input-group">
+                        <input type="email" class="form-control bg-transparent border-secondary text-white" placeholder="Email for updates">
+                        <button class="btn btn-teal" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
             </div>
-            <div class="footer_content2">
-              <ul>
-                <li>
-                  <i class="fa fa-phone"></i
-                  ><span>
-                    <p>028 3776 1300</p>
-                    <br />
-                    <p>(+84) 28 3776 1369</p>
-                  </span>
-                </li>
-                <li>
-                  <i class="fa fa-envelope"></i
-                  ><span>
-                    <p>renalyze@gmail.com</p>
-                    <br />
-                    <p>enquiries@rmit.edu.vn</p>
-                  </span>
-                </li>
-                <li>
-                  <i class="fa fa-phone"></i
-                  ><span>
-                    <p>702 Đ. Nguyễn Văn Linh</p>
-                    <br />
-                    <p>Tân Hưng, Quận 7</p>
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- nav  -->
-          <div
-            class="navigation navbar wow animate__ animate__fadeIn animate__delay-2s animated"
-            data-wow-duration="2s"
-          >
-            <h3>Our links</h3>
-            <ul>
-              <li></li>
-              <li>
-                <a href="{{ url_for('index') }}"
-                  ><p><i class="fa fa-angle-right"></i>Home</p></a
-                >
-              </li>
-              <li></li>
-              <li>
-                <a href="{{ url_for('prediction') }}"
-                  ><p><i class="fa fa-angle-right"></i>CKD Prediction</p></a
-                >
-              </li>
-              <li>
-                <a href="{{ url_for('details') }}">
-                  <p>
-                    <i class="fa fa-angle-right"></i>Data Visualisation Report
-                  </p>
-                </a>
-              </li>
-              <li>
-                <a href="{{ url_for('recommendations') }}">
-                  <p><i class="fa fa-angle-right"></i>Health Recommendations</p>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <!-- nav  -->
-          <div
-            class="navigation navbar wow animate__ animate__fadeIn animate__delay-2s animated"
-            data-wow-duration="2s"
-          >
-            <h3>Our Services (Under Construction)</h3>
-            <ul class="">
-              <li>
-                <p>
-                  <i class="fa fa-angle-right"></i>
-                  Strategy & Research
-                </p>
-              </li>
-              <li>
-                <p>
-                  <i class="fa fa-angle-right"></i>
-                  Web Development
-                </p>
-              </li>
-              <li>
-                <p>
-                  <i class="fa fa-angle-right"></i>
-                  Chatbot Improvement
-                </p>
-              </li>
-              <li>
-                <p>
-                  <i class="fa fa-angle-right"></i>
-                  Digital Marketing
-                </p>
-              </li>
-            </ul>
-          </div>
-          <!-- nav  -->
-          <div
-            class="navigation navbar wow animate__ animate__fadeIn animate__delay-2s animated"
-            data-wow-duration="2s"
-          >
-            <h3>Other links (Under Construction)</h3>
-            <ul>
-              <li>
-                <p>
-                  <i class="fa fa-angle-right"></i>
-                  Portfolio
-                </p>
-              </li>
-              <li>
-                <p>
-                  <i class="fa fa-angle-right"></i>
-                  Privacy Policy
-                </p>
-              </li>
-              <li>
-                <p>
-                  <i class="fa fa-angle-right"></i>
-                  Terms & Conditions
-                </p>
-              </li>
-              <li>
-                <p>
-                  <i class="fa fa-angle-right"></i>
-                  Support
-                </p>
-              </li>
-            </ul>
-          </div>
         </div>
-      </div>
-      <!-- copyright  -->
-      <div class="copyright">
-        <div class="container">
-          <div class="text">
-            Copyright © 2025
-            <span>Renalyze</span>
-            . All rights reserved.
-          </div>
-          <div class="social">
-            <a href="https://www.facebook.com/">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://www.instagram.com/">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://www.x.com/">
-              <i class="fab fa-twitter"></i>
-            </a>
-          </div>
+        <div class="py-4 border-top border-secondary text-center">
+            <small>&copy; 2026 Renalyze. Powered by Sleepless Nights and Myself.</small>
         </div>
-      </div>
     </footer>
 
-    <button id="chatbot-toggle"><i class="bi bi-robot"></i></button>
+    <button id="chatbot-toggle"><i class="bi bi-chat-dots-fill fs-4"></i></button>
 
-    <div id="chatbot">
-      <div id="chatbot-header">
-        <div id="logo">
-          <i class="bi bi-robot"></i>
+    <div id="chatbot" class="animate__animated animate__fadeInUp">
+        <div class="bg-dark p-3 text-white d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="mb-0 fw-bold"><i class="bi bi-robot me-2"></i>Renalyze AI</h6>
+                <small class="text-info opacity-75">Online | Medical Assistant</small>
+            </div>
+            <button class="btn btn-sm text-white opacity-50" id="close-chat"><i class="bi bi-x-lg"></i></button>
         </div>
-        <div id="title">
-          <h4>AI Chatbot</h4>
-          <p>Ask me anything about CKD</p>
+        <div id="messages" class="flex-grow-1 p-3 overflow-auto small"></div>
+        <div class="p-3 border-top d-flex">
+            <input type="text" id="user-input" class="form-control form-control-sm border-0 bg-light" placeholder="Ask about kidney health...">
+            <button id="send-button" class="btn text-primary border-0"><i class="bi bi-send-fill"></i></button>
         </div>
-        <button id="header-toggle"><i class="bi bi-x"></i></button>
-      </div>
-      <div id="messages"></div>
-      <div id="chat-input">
-        <div id="loading" style="display: none">
-          <div class="spinner"></div>
-        </div>
-        <input
-          type="text"
-          id="user-input"
-          placeholder="Type your question..."
-        />
-        <button id="send-button"><i class="bi bi-send"></i></button>
-      </div>
     </div>
 
-    {% block scripts %}
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-      crossorigin="anonymous"
-    ></script>
-    <!-- Wow.js -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"
-      integrity="sha512-Eak/29OTpb36LLo2r47IpVzPBLXnAMPAVypbSZiZ4Qkf8p/7S/XRG5xp7OKWPPYfJT6metI+IORkR5G8F900+g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script>
-      new WOW().init();
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
     <script>
-      document
-        .querySelector("#dropdown-button")
-        .addEventListener("click", function () {
-          const dropdown = document.querySelector(".dropdown");
-          dropdown.classList.toggle("active");
-        });
+        new WOW().init();
+        
+        // Chatbot Toggle Logic
+        const chatToggle = document.getElementById('chatbot-toggle');
+        const chatWindow = document.getElementById('chatbot');
+        const closeChat = document.getElementById('close-chat');
 
-      const menuItems = document.querySelectorAll(".dropdown-content a");
-      menuItems.forEach(function (item) {
-        item.addEventListener("click", function () {
-          document.querySelector(".dropdown").classList.remove("active");
-        });
-      });
-
-      document.getElementById("linkBtn").addEventListener("click", function () {
-        window.location.href = "{{ url_for('details') }}";
-      });
+        chatToggle.onclick = () => {
+            chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        };
+        closeChat.onclick = () => { chatWindow.style.display = 'none'; };
     </script>
-
-    {% endblock %}
-  </body>
+    
+    {% block scripts %}{% endblock %}
+</body>
 </html>

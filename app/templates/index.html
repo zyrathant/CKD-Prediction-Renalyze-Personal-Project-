@@ -1,136 +1,145 @@
-{% extends "base.html" %} {% block title %}CKD Prediction{% endblock %} {% block
-content %}
-<!-- Welcome  -->
-<section class="welcome">
-  <div class="container">
-    <!-- left  -->
-    <div class="welcome_left">
-      <!-- title  -->
-      <div class="welcome_title">
-        <p class="animate__animated animate__fadeInUp">We are The Best</p>
-        <h1 class="animate__animated animate__fadeInUp animate__delay-1s">
-          Welcome to CKD Health Assessment!
-        </h1>
+{% extends "base.html" %} 
+{% block title %}Renalyze | Advanced Kidney Intelligence{% endblock %} 
+
+{% block content %}
+<style>
+  .hero-gradient {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+  }
+  .icon-shape {
+    width: 60px;
+    height: 60px;
+    background: #0d6efd20;
+    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+  }
+</style>
+
+<section class="py-5 hero-gradient overflow-hidden">
+  <div class="container px-4 px-lg-5 py-5">
+    <div class="row gx-5 align-items-center">
+      <div class="col-lg-7">
+        <div class="animate__animated animate__fadeInLeft">
+          <span class="badge bg-info text-dark mb-3 fw-bold px-3 py-2">Streamlining Renal Diagnostics</span>
+          <h1 class="display-3 fw-extrabold mb-4">
+            Renalyze<span class="text-info">.</span>
+          </h1>
+          <p class="lead mb-5 opacity-75">
+            The next generation of renal diagnostics. Combining predictive risk modeling, 
+            deep learning MRI classification, and high-fidelity 3D volumetric rendering 
+            into a single clinical workspace. <p class="text-danger fst-italic">Disclaimer: This is a personal project and not intended for clinical use.</p></p>
+          </p>
+          <div class="d-grid gap-3 d-sm-flex">
+            <a href="{{ url_for('ckd_analysis') }}" class="btn btn-info btn-lg px-5 py-3 fw-bold rounded-pill">Analyze Risk</a>
+            <a href="{{ url_for('mri_visualisation') }}" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">MRI Suite</a>
+          </div>
+        </div>
       </div>
-      <div class="text">
-        <p class="animate__animated animate__fadeInUp animate__delay-2s">
-          Our mission is to help you quickly assess your risk of developing
-          Chronic Kidney Disease (CKD) through an easy and secure online form.
-        </p>
-        <p class="animate__animated animate__fadeInUp animate__delay-3s">
-          By providing some basic health information, you will receive a
-          personalized evaluation and useful recommendations to better protect
-          your kidney health.
-        </p>
-      </div>
-    </div>
-    <!-- img  -->
-    <div class="welcome_right">
-      <img
-        class="animate__animated animate__fadeInUp animate__delay-3s"
-        src="{{ url_for('static', filename='img/welcome.webp') }}"
-        alt=""
-      />
-    </div>
-  </div>
-</section>
-<!-- Using  -->
-<section class="using">
-  <div class="container">
-    <!-- title  -->
-    <div class="using_title">
-      <p>How to use?</p>
-      <h2>Our Guidelines</h2>
-    </div>
-    <!-- item  -->
-    <div class="using_content">
-      <div class="using_item">
-        <img src="{{ url_for('static', filename='img/using_1.jpg') }}" alt="" />
-        <h3>Complete the Form</h3>
-        <p>
-          Answer a few simple questions about your health, such as age, blood
-          pressure, blood sugar levels, and other relevant factors.
-        </p>
-      </div>
-      <div class="using_item">
-        <img src="{{ url_for('static', filename='img/using_2.jpg') }}" alt="" />
-        <h3>Get Your Risk Assessment</h3>
-        <p>
-          Our system will analyze your information and provide an instant
-          evaluation of your potential risk for CKD.
-        </p>
-      </div>
-      <div class="using_item">
-        <img src="{{ url_for('static', filename='img/using_3.jpg') }}" alt="" />
-        <h3>Receive Personalized Advice</h3>
-        <p>
-          Along with your results, we offer tailored recommendations to help you
-          reduce your risk and take proactive steps towards a healthier life.
-        </p>
+      <div class="col-lg-5 d-none d-lg-block animate__animated animate__zoomIn">
+        <div class="position-relative">
+          <img class="img-fluid rounded-4 shadow-2xl border border-secondary" 
+               src="{{ url_for('static', filename='img/kidney_3d.png') }}" alt="3D Kidney Visualization" />
+          <div class="position-absolute bottom-0 start-0 m-3 bg-white text-dark p-3 rounded-3 shadow-sm border-start border-info border-5">
+             <small class="fw-bold d-block text-uppercase">Current Model Status</small>
+             <span class="badge bg-success">98.2% Accuracy</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
-<!-- About us  -->
-<section class="about_us">
-  <div class="about_container">
-    <div
-      class="about_left wow animate__animated animate__fadeInLeft"
-      data-wow-duration="2s"
-      data-wow-delay="0.2s"
-    >
-      <img src="{{ url_for('static', filename='img/about_us.jpg') }}" alt="" />
+
+<section class="py-5 bg-white">
+  <div class="container px-4 px-lg-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-black display-5">Core Diagnostic Modules</h2>
+      <p class="text-muted">Multi-modal approach to renal health assessment</p>
     </div>
-    <!-- content  -->
-    <div
-      class="about_right title wow animate__animated animate__fadeInRight"
-      data-wow-duration="2s"
-      data-wow-delay="0.2s"
-    >
-      <!-- title  -->
-      <div class="title">
-        <p>About Us</p>
-        <h2>About CKD Health Assessment</h2>
+    
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 p-4 glass-card shadow-sm border-0">
+          <div class="icon-shape">
+            <i class="fas fa-chart-line fa-2x"></i>
+          </div>
+          <h3 class="h4 fw-bold">CKD Risk Analysis</h3>
+          <p class="text-muted small mb-4">Utilizing XGBoost and Random Forest ensembles to predict disease progression based on 24 clinical parameters.</p>
+          <a href="{{ url_for('ckd_analysis') }}" class="mt-auto fw-bold text-decoration-none text-info">
+            Launch Calculator <i class="fas fa-arrow-right ms-1"></i>
+          </a>
+        </div>
       </div>
-      <div class="text">
-        <p>
-          At CKD Health Assessment, we are committed to helping individuals take
-          proactive steps toward protecting their kidney health. <br />
-          We provide a fast, simple, and science-based online tool to assess the
-          risk of Chronic Kidney Disease (CKD) based on key personal and medical
-          information.
-        </p>
-        <ul>
-          <li>
-            <i class="flaticon-check"></i>
-            <span>
-              Provide an easy-to-use and accurate risk evaluation tool for
-              CKD.</span
-            >
-          </li>
-          <li>
-            <i class="flaticon-check"></i>
-            <span> Educate users about the importance of kidney health.</span>
-          </li>
-          <li>
-            <i class="flaticon-check"></i>
-            <span>
-              Encourage early medical consultation and lifestyle changes where
-              necessary.</span
-            >
-          </li>
-          <li>
-            <i class="flaticon-check"></i>
-            <span>
-              Get a view of events and trends. Be updated on our recent
-              news.</span
-            >
-          </li>
-        </ul>
-        <button class="btn-grad"><a href="{{url_for('recommendations') }}">Learn More</a></button>
+
+      <div class="col-md-4">
+        <div class="card h-100 p-4 glass-card shadow-sm border-0">
+          <div class="icon-shape">
+            <i class="fas fa-microscope fa-2x"></i>
+          </div>
+          <h3 class="h4 fw-bold">MRI Classification</h3>
+          <p class="text-muted small mb-4">Neural Network classification of renal images to detect Tumors, Cysts, and Stones with high precision saliency maps.</p>
+          <!-- mri_classification --><a href="{{ url_for('recommendations') }}" class="mt-auto fw-bold text-decoration-none text-info">
+            Analyze Scans <i class="fas fa-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 p-4 glass-card shadow-sm border-0">
+          <div class="icon-shape">
+            <i class="fas fa-cube fa-2x"></i>
+          </div>
+          <h3 class="h4 fw-bold">Volumetric Rendering</h3>
+          <p class="text-muted small mb-4">Convert 2D .nii slices into interactive 3D models using VTK & PyVista for pre-surgical planning.</p>
+          <!-- visualization_3d --><a href="{{ url_for('recommendations') }}" class="mt-auto fw-bold text-decoration-none text-info">
+            Generate 3D Model <i class="fas fa-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light border-top">
+  <div class="container px-4 px-lg-5 py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="p-5 bg-white shadow-lg rounded-5">
+            <h6 class="text-info fw-bold text-uppercase ls-2">The Technology</h6>
+            <h2 class="display-6 fw-bold mb-4">Advancing Precision Medicine</h2>
+            <p class="text-secondary">Renalyze leverages modern Python frameworks to bridge the gap between raw medical data and actionable clinical insights.</p>
+            <div class="d-flex align-items-start mb-3">
+                <i class="fas fa-check text-success mt-1 me-3"></i>
+                <p class="mb-0"><strong>NIfTI Processing:</strong> Automated handling of medical imaging standards.</p>
+            </div>
+            <div class="d-flex align-items-start mb-3">
+                <i class="fas fa-check text-success mt-1 me-3"></i>
+                <p class="mb-0"><strong>Ensemble Learning:</strong> High-confidence risk scoring.</p>
+            </div>
+            <div class="d-flex align-items-start">
+                <i class="fas fa-check text-success mt-1 me-3"></i>
+                <p class="mb-0"><strong>Interactive 3D:</strong> Browser-based mesh viewing for patients and doctors.</p>
+            </div>
+        </div>
+      </div>
+      <div class="col-lg-6 ps-lg-5">
+        <img src="{{ url_for('static', filename='img/Kidney_mri.png') }}" class="img-fluid rounded-4 shadow" alt="MRI Processing">
       </div>
     </div>
   </div>
 </section>
 {% endblock %}
-

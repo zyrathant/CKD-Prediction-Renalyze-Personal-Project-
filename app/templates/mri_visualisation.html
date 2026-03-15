@@ -1,0 +1,184 @@
+{% extends "base.html" %} 
+{% block title %}Imaging Suite | Renalyze{% endblock %} 
+
+{% block styles %} 
+{{ super() }}
+<style>
+  :root {
+    --primary-navy: #0f172a;
+    --accent-teal: #2dd4bf;
+    --glass-white: rgba(255, 255, 255, 0.95);
+  }
+
+  .page-wrapper { background-color: #f8fafc; min-height: 100vh; padding: 2rem 0; }
+
+  /* Tab-style Toggle for Modes */
+  .mode-selector {
+    background: #e2e8f0;
+    padding: 5px;
+    border-radius: 16px;
+    display: inline-flex;
+    margin-bottom: 2rem;
+  }
+  .mode-btn {
+    border: none;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: 0.3s;
+    background: transparent;
+    color: #64748b;
+  }
+  .mode-btn.active {
+    background: white;
+    color: var(--primary-navy);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  /* Upload Zone */
+  .upload-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 20px;
+    background: white;
+    padding: 3rem;
+    text-align: center;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  .upload-box:hover { border-color: var(--accent-teal); background: #f0fdfa; }
+
+  /* Viewer Area */
+  .viewer-card {
+    background: var(--primary-navy);
+    border-radius: 24px;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .diagnostic-sidebar {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  }
+
+  .status-pill {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+</style>
+{% endblock %} 
+
+{% block content %}
+<div class="page-wrapper">
+  <div class="container">
+    
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Renalyze <span class="text-info">Imaging Suite</span></h2>
+        <p class="text-muted">Advanced MRI Classification & Volumetric Visualization</p>
+        
+        <div class="mode-selector mt-3">
+            <button class="mode-btn active" onclick="switchMode('diagnostic')">
+                <i class="bi bi-microscope me-2"></i>2D Diagnostic
+            </button>
+            <button class="mode-btn" onclick="switchMode('visual')">
+                <i class="bi bi-box-iso me-2"></i>3D Visualization
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="diagnostic-sidebar mb-4">
+                <label class="small fw-bold text-uppercase text-secondary mb-3 d-block">1. Upload Scan</label>
+                <div class="upload-box" id="drop-zone">
+                    <i class="bi bi-cloud-arrow-up fs-1 text-info"></i>
+                    <p class="mt-2 mb-0 small fw-bold">Drag & Drop Scan</p>
+                    <span class="text-muted" style="font-size: 0.7rem;">Supports .JPG, .PNG, .NII</span>
+                    <input type="file" id="mri-upload" hidden accept=".jpg,.jpeg,.png,.nii">
+                </div>
+
+                <div class="mt-4" id="diagnostic-controls">
+                    <label class="small fw-bold text-uppercase text-secondary mb-3 d-block">2. Analysis Controls</label>
+                    <button class="btn btn-dark w-100 rounded-3 mb-2 py-2 fw-bold" id="run-analysis">
+                        Run AI Classification
+                    </button>
+                </div>
+            </div>
+
+            <div id="ai-results" class="diagnostic-sidebar animate__animated animate__fadeInUp" style="display: none;">
+                <h6 class="fw-bold border-bottom pb-2 mb-3">Diagnostic Insights</h6>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="small fw-bold text-secondary">Classification:</span>
+                    <span class="status-pill bg-success-subtle text-success" id="class-label">Normal</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="small fw-bold text-secondary">Confidence:</span>
+                    <span class="fw-bold">98.2%</span>
+                </div>
+                <p class="extra-small text-muted fst-italic">AI detected no signs of cysts or tumors in the uploaded sequence.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="viewer-card" id="main-viewer">
+                <div class="text-center" id="viewer-placeholder">
+                    <i class="bi bi-images mb-3 d-block fs-1"></i>
+                    <p class="fw-semibold">Waiting for image upload...</p>
+                </div>
+                <canvas id="mri-canvas" style="display: none; width: 100%; height: 100%;"></canvas>
+            </div>
+            
+            <div class="mt-3 p-3 bg-white rounded-4 border d-flex justify-content-between align-items-center">
+                <div class="small text-muted">
+                    <i class="bi bi-info-circle me-1"></i> Press <strong>R</strong> to reset view
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-secondary px-3"><i class="bi bi-download me-2"></i>Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    // Mode Switching Logic
+    function switchMode(mode) {
+        const btns = document.querySelectorAll('.mode-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        
+        const viewerText = document.querySelector('#viewer-placeholder p');
+        if(mode === 'visual') {
+            viewerText.innerText = "Ready for 3D Volumetric Rendering...";
+        } else {
+            viewerText.innerText = "Ready for 2D Diagnostic Analysis...";
+        }
+    }
+
+    // Handle Upload Trigger
+    document.getElementById('drop-zone').onclick = () => document.getElementById('mri-upload').click();
+
+    // Show Results Simulation
+    document.getElementById('run-analysis').onclick = () => {
+        document.getElementById('ai-results').style.display = 'block';
+    };
+
+    // Tooltips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
+{% endblock %}

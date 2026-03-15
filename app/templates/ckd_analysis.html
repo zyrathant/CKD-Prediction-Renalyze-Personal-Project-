@@ -1,0 +1,405 @@
+{% extends "base.html" %} {% block title %}Risk Analysis | Renalyze{% endblock
+%} {% block styles %} {{ super() }}
+<style>
+  :root {
+    --primary-navy: #0f172a;
+    --accent-teal: #2dd4bf;
+    --medical-blue: #38bdf8;
+    --bg-slate: #f8fafc;
+  }
+
+  .page-wrapper {
+    background-color: var(--bg-slate);
+    min-height: 100vh;
+    padding: 3rem 0;
+  }
+
+  /* Main Application Window */
+  .app-window {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  /* Left Branding Panel */
+  .branding-panel {
+    background: linear-gradient(180deg, var(--primary-navy) 0%, #1e293b 100%);
+    color: white;
+    padding: 3.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Section Styling */
+  .form-section {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .section-title {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--medical-blue);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .section-title i {
+    margin-right: 10px;
+    font-size: 1.1rem;
+  }
+
+  /* Input Refinement */
+  .form-control-pill {
+    background: #f8fafc;
+    border: 2px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  .form-control-pill:focus {
+    background: white;
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.1);
+    outline: none;
+  }
+
+  /* Tooltip Badge */
+  .info-trigger {
+    cursor: help;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .info-trigger:hover {
+    color: var(--medical-blue);
+  }
+
+  /* Final Action */
+  .btn-analyze {
+    background: var(--accent-teal);
+    color: var(--primary-navy);
+    font-weight: 700;
+    border: none;
+    padding: 1.2rem;
+    border-radius: 14px;
+    width: 100%;
+    transition: all 0.3s;
+    font-size: 1.1rem;
+  }
+
+  .btn-analyze:hover {
+    background: #24bca8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(45, 212, 191, 0.2);
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="page-wrapper">
+  <div class="container">
+    <div class="app-window animate__animated animate__fadeIn">
+      <div class="row g-0">
+        <div class="col-lg-4 branding-panel">
+          <div>
+            <h2 class="fw-bold mb-3">
+              Renalyze<span class="text-teal">.</span>
+            </h2>
+            <div class="badge bg-info text-dark mb-4 px-3 py-2 rounded-pill">
+              Chronic Kidney Disease Risk Analysis
+            </div>
+            <p class="opacity-75">
+              Welcome to Renalyze's Chronic Kidney Disease Risk Analysis module.
+              This tool leverages advanced machine learning algorithms to
+              provide personalized risk assessments based on patient
+              demographics, medical history, and laboratory results. Please fill
+              out the form to receive an AI-driven evaluation of your likelihood
+              of CKD progression.
+            </p>
+            <p class="text-danger fst-italic">
+              Disclaimer: This is a personal project and not intended for
+              clinical use.
+            </p>
+          </div>
+
+          <div class="d-none d-lg-block">
+            <div
+              class="p-3 rounded-4"
+              style="
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+              "
+            >
+              <small class="d-block fw-bold text-uppercase mb-2 text-info"
+                >Model Capability</small
+              >
+              <ul class="list-unstyled small mb-0 opacity-75">
+                <li class="mb-1">
+                  <i class="bi bi-check2-circle me-2"></i> XGBoost Progression
+                  Scoring
+                </li>
+                <li class="mb-1">
+                  <i class="bi bi-check2-circle me-2"></i> Automated eGFR
+                  Categorization
+                </li>
+                <li>
+                  <i class="bi bi-check2-circle me-2"></i> Clinical Sensitivity:
+                  97.4%
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8 p-4 p-md-5">
+          <form id="health-form">
+            <div class="form-section">
+              <div class="section-title">
+                <i class="bi bi-person-lines-fill"></i> Patient Demographics
+              </div>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">Age</label>
+                  <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    class="form-control-pill w-100"
+                    placeholder="Years"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">Gender</label>
+                  <select
+                    name="gender"
+                    id="gender"
+                    class="form-select form-control-pill"
+                    required
+                  >
+                    <option value="" disabled selected>Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">BMI Index</label>
+                  <input
+                    type="number"
+                    id="BMIBaseline"
+                    step="0.1"
+                    name="BMIBaseline"
+                    class="form-control-pill w-100"
+                    placeholder="kg/m²"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="section-title">
+                <i class="bi bi-heart-pulse"></i> Medical History
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div
+                    class="p-3 border rounded-3 d-flex align-items-center justify-content-between"
+                  >
+                    <label
+                      class="form-check-label fw-semibold"
+                      for="HistoryDiabetes"
+                      >History of Diabetes</label
+                    >
+                    <div class="form-check form-switch">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="HistoryDiabetes"
+                        name="HistoryDiabetes"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div
+                    class="p-3 border rounded-3 d-flex align-items-center justify-content-between"
+                  >
+                    <label class="form-check-label fw-semibold" for="HistoryCHD"
+                      >History of CHD</label
+                    >
+                    <div class="form-check form-switch">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="HistoryCHD"
+                        name="HistoryCHD"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="section-title">
+                <i class="bi bi-droplet-half"></i> Laboratory Results
+              </div>
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label
+                    class="form-label small fw-bold d-flex justify-content-between"
+                  >
+                    Creatinine (mg/dL)
+                    <i
+                      class="bi bi-info-circle info-trigger"
+                      data-bs-toggle="tooltip"
+                      title="Creatinine is a waste product from the normal breakdown of muscle tissue."
+                    ></i>
+                  </label>
+                  <input
+                    type="number"
+                    id="CreatinineBaseline"
+                    step="0.01"
+                    name="CreatinineBaseline"
+                    class="form-control-pill w-100"
+                    placeholder="0.00"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    class="form-label small fw-bold d-flex justify-content-between"
+                  >
+                    eGFR (mL/min/1.73m²)
+                    <i
+                      class="bi bi-info-circle info-trigger"
+                      data-bs-toggle="tooltip"
+                      title="eGFR is a measure used to assess kidney function."
+                    ></i>
+                  </label>
+                  <input
+                    type="number"
+                    id="eGFRBaseline"
+                    step="0.1"
+                    name="eGFRBaseline"
+                    class="form-control-pill w-100"
+                    placeholder="0.0"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">Cholesterol</label>
+                  <input
+                    type="number"
+                    id="CholesterolBaseline"
+                    step="0.1"
+                    name="CholesterolBaseline"
+                    class="form-control-pill w-100"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label
+                    class="form-label small fw-bold d-flex justify-content-between"
+                  >
+                    Systolic BP
+                    <i
+                      class="bi bi-info-circle info-trigger"
+                      data-bs-toggle="tooltip"
+                      title="Pressure in your arteries when the heart beats."
+                    ></i>
+                  </label>
+                  <input
+                    type="number"
+                    id="sBPBaseline"
+                    name="sBPBaseline"
+                    class="form-control-pill w-100"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label
+                    class="form-label small fw-bold d-flex justify-content-between"
+                  >
+                    Diastolic BP
+                    <i
+                      class="bi bi-info-circle info-trigger"
+                      data-bs-toggle="tooltip"
+                      title="Pressure in your arteries when the heart is at rest."
+                    ></i>
+                  </label>
+                  <input
+                    type="number"
+                    id="dBPBaseline"
+                    name="dBPBaseline"
+                    class="form-control-pill w-100"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-analyze">
+              Start Analysis <i class="bi bi-cpu-fill ms-2"></i>
+            </button>
+          </form>
+
+          <div id="result-container" class="mt-4" style="display:none;">
+    <div id="risk-card" class="p-4 rounded-4 shadow-lg border-0 position-relative overflow-hidden" style="background: white;">
+        <div id="risk-accent" class="position-absolute top-0 start-0 bottom-0" style="width: 8px;"></div>
+        
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h6 class="text-uppercase fw-bold ls-1 mb-1" style="font-size: 0.7rem; letter-spacing: 2px; color: #64748b;">AI Diagnostic Result</h6>
+                <h2 id="display-status" class="fw-bold mb-0" style="font-size: 2.5rem;">---</h2>
+                
+                <div class="mt-3 mb-2" style="max-width: 90%;">
+                    <div class="progress" style="height: 12px; background-color: #f1f5f9; border-radius: 10px;">
+                        <div id="display-progress-bar" 
+                             class="progress-bar progress-bar-striped progress-bar-animated" 
+                             role="progressbar" 
+                             style="width: 0%; border-radius: 10px; transition: width 1s ease-in-out;">
+                        </div>
+                    </div>
+                </div>
+                
+                <p id="display-recommendation" class="text-muted small mt-2 mb-0"></p>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="d-inline-block text-center p-3 rounded-4 bg-light border">
+                    <span class="d-block small fw-bold text-uppercase" style="color: #64748b;">Probability</span>
+                    <span id="display-prob" class="h2 fw-bold mb-0">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %} {{ super() }}
+<script>
+  // Enable Tooltips
+  const tooltipTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]',
+  );
+  const tooltipList = [...tooltipTriggerList].map(
+    (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl),
+  );
+</script>
+<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+{% endblock %}
